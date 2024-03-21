@@ -1,7 +1,7 @@
 
 module.exports = (sequelize, DataTypes) => {
     const command = sequelize.define(
-        'user',
+        'command',
         {
             content: {
                 type: DataTypes.STRING,
