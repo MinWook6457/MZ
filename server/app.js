@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 
-const { sequelize } = require('./models');
+const { sequelize } = require('./model/index');
 
 sequelize.sync({ force: false })
   .then(() => {

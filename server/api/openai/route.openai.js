@@ -16,3 +16,10 @@ router.get('/read',  // 프롬프트 받아오기
     ]),
     openai.readSendedContent
 )
+
+router.post('/create', // 생성된 이미지 url 프론트에 날리기
+    validate([
+        body('imgURL').isString(),
+    ]),
+    openai.createImg
+)

@@ -10,12 +10,12 @@ module.exports = (sequelize, DataTypes) => {
                 comment: 'userId',
             },
             email: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(255),
                 unique: true, // 널 값 허용 , 값 중복 허용X
                 comment: '로그인 인증 이메일'
             },
             password : { // 비밀번호
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(255),
                 allowNull: false
             },
 

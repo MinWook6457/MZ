@@ -10,11 +10,11 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 db.User = require('./user/user')(sequelize, Sequelize) // 유저 테이블
 
-db.sequelize = Sequelize;
-db.sequelize = sequelize;
-
-module.exports = db;
+const CommandModel = require('./command/command')(sequelize, Sequelize);
+db.Command = CommandModel;
 
 
+db.sequelize = sequelize
+db.Sequelize = Sequelize
 
 module.exports = db;

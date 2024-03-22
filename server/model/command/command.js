@@ -1,15 +1,16 @@
+const { Sequelize, DataTypes } = require('sequelize');
 
-module.exports = (sequelize, DataTypes) => {
-    const command = sequelize.define(
+module.exports = (sequelize) => {
+    const Command = sequelize.define(
         'command',
         {
             content: {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(255),
                 unique: true, 
                 comment: '사용자가 입력한 프롬프트'
             },
             imgURL : {
-                type: DataTypes.STRING,
+                type: DataTypes.STRING(255),
                 unique: true, 
                 allowNull : false
             }
@@ -20,10 +21,11 @@ module.exports = (sequelize, DataTypes) => {
             charset: 'utf8',
             collate: 'utf8_general_ci'
         }
-    )
+    );
 
-    command.associate = (models) => {
-        command.belongsTo(models.User, {foreignKey : 'user_id'})
-    }
-    return user;
-}
+    Command.associate = (models) => {
+        Command.belongsTo(models.User, { foreignKey: 'user_id' });
+    };
+
+    return Command;
+};
