@@ -9,11 +9,10 @@ const authToken = require('../../../middleware/authToken')
 // router.use(authToken)
 
 router.post('/test',
-    [
-        body('email').isString(),
-        body('password').isString()
-    ],
-    validate,
+    validate([
+    body('email').isString(),
+    body('password').isString(),
+    ]),
     register.createUser
 );
 
