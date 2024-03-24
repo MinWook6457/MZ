@@ -1,18 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const login = require('./controller.login/login');
+const register = require('./controller.register/register');
 const path = require('path');
 const { body } = require('express-validator');
 const validate = require('../../../middleware/validate');
 
-router.get('/create',
+router.post('/create',
     [
-        body('user_id').isInt(),
         body('email').isString(),
         body('password').isString()
     ],
     validate,
-    login.createToken
+    register.createUser
 );
 
-module.exports = router;
+module.exports = router

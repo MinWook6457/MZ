@@ -4,6 +4,11 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 
+// 라우터 설정
+const openaiRouter = require('./api/openai/route.openai')
+const loginRouter = require('./api/user/login/route.login')
+const registerRouter = require('./api/user/register/route.register')
+
 const port = 8080;
 
 const app = express();
@@ -24,19 +29,12 @@ sequelize.sync({ force: false })
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// 라우터 설정
-const openaiRouter = require('./api/openai/route.openai')
+
 
 // 라우팅
-app.use("/openai/create",openaiRouter)
-
-
-app.use((req, res, next) => {
-  const error =  new Error(`${req.method} ${req.url} 라우터가 없습니다.`);
-  error.status = 404;
-  next(error);
-});
-
+app.use("/openai", openaiRouter)
+app.use("/user", loginRouter)
+app.use("/user/register", registerRouter)
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

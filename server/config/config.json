@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "minwook",
-    "password": "test_minwook",
+    "password": "testminwook",
     "database": "mz",
     "host": "127.0.0.1",
     "dialect": "mysql"
