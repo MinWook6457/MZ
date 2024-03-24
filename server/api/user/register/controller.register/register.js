@@ -1,28 +1,27 @@
-const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 
-const {User} = require('../../../../model')
-const response = require('../../../../response')
+const { User } = require('../../../../model');
+const response = require('../../../../response');
 
-const createUser = async(req,res) => {
-    const userData = req.body
-    console.log(userData)
-    try{
-        const hashedPassword = await bcrypt.hash(userData.password, 10); // 비밀번호 해싱
+const createUser = async (req, res) => {
+    const userData  = req.body;
+    console.log(userData);
+    try {
+       // const hashedPassword = await bcrypt.hash(userData.password, 10); // Password hashing
 
         const user = await User.create({
-            email : userData.email,
-            password : hashedPassword
-        })
+            email: userData.email,
+            password: userData.password
+        });
 
-        const token = jwt.sign({ user_id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        return response(res, 200, 'User created successfully', { token: token });
-    }catch(err){
-        return response(res,500,'Failed Create User')
+        return response(res, 200, user);
+    } catch (err) {
+        console.error(err);
+        return response(res, 500, 'Failed to Create User');
     }
-}
+};
 
 module.exports = {
     createUser
-}
+};

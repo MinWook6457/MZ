@@ -6,7 +6,7 @@ const validate = require('../../middleware/validate')
 
 const { body } = require('express-validator');
 
-router.get('/read',  // 프롬프트 받아오기
+router.post('/read',  // 프롬프트 받아오기
     [
         body('prompt').isString(),
     ],
