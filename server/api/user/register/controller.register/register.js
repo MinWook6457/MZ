@@ -8,11 +8,11 @@ const createUser = async (req, res) => {
     const userData  = req.body;
     console.log(userData);
     try {
-       // const hashedPassword = await bcrypt.hash(userData.password, 10); // Password hashing
+        const hashedPassword = await bcrypt.hash(userData.password, 10); // Password hashing
 
         const user = await User.create({
             email: userData.email,
-            password: userData.password
+            password: hashedPassword
         });
 
         return response(res, 200, user);

@@ -5,14 +5,12 @@ const path = require('path');
 const { body } = require('express-validator');
 const validate = require('../../../middleware/validate');
 
-router.get('/create',
-    [
-        body('user_id').isInt(),
+router.post('/login',
+    validate([
         body('email').isString(),
-        body('password').isString()
-    ],
-    validate,
-    login.createToken
+        body('password').isString(),
+        ]),
+    login.loginUser
 );
 
 module.exports = router;

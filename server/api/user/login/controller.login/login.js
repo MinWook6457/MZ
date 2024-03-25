@@ -1,25 +1,35 @@
-require('dotenv').config()
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const response = require('../../../../response')
+const response = require('../../../../response');
+const findUserByEmail = require('../service.login/findUserByEmail');
 
-const jwt = require('jsonwebtoken')
+const loginUser = async (req, res) => {
+    const userData = req.body;
+    try {
+        const user = await findUserByEmail(userData.email)
 
-const SECRET_KEY = 'MY-SECRET-KEY'
+        console.log(user)
 
-const createToken = async(req,res) => {
-    const {user_id,email,password} = req.body
+        if (!user) {
+            return response(res, 400, "존재하지 않는 사용자입니다.");
+        }
 
-    try{
-        //jwt.sign(payload, secretOrPrivateKey, [options, callback])
+        const matchPassword = await bcrypt.compare(userData.password, user.password);
+        if (!matchPassword) {
+            return response(res, 400, "비밀번호가 일치하지 않습니다.");
+        }
 
-          return response(token,200,'토큰 발급 완료')
-    }catch(err){
-        return response(res,500,'Failed JWT Login !!')
+        // JWT 토큰 생성
+        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        
+        return response(res, 200, { user, token }); 
+    } catch (err) {
+        console.error(err);
+        return response(res, 500, '로그인에 실패했습니다.');
     }
-
-}
-
+};
 
 module.exports = {
-    createToken
-}
+    loginUser
+};
