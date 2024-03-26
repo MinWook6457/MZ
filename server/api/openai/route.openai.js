@@ -7,10 +7,10 @@ const validate = require('../../middleware/validate')
 const { body } = require('express-validator');
 
 router.post('/read',  // 프롬프트 받아오기
-    [
-        body('prompt').isString(),
-    ],
-    validate,
+    validate([
+    body('user_id').isInt(),
+    body('prompt').isString(),
+    ]),
     openai.readSendedContent
 )
 /*

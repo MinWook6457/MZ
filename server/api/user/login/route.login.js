@@ -5,6 +5,10 @@ const path = require('path');
 const { body } = require('express-validator');
 const validate = require('../../../middleware/validate');
 
+const authToken = require('../../../middleware/authToken')
+
+router.use(authToken)
+
 router.post('/login',
     validate([
         body('email').isString(),

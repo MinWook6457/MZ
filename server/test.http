@@ -1,7 +1,7 @@
-POST http://localhost:8080/user/login
+POST http://localhost:8080/openai/read
 Content-Type: application/json 
 
 {
-    "email" : "testEmail44@test.com",
-    "password" : "testPassword44"
+    "user_id" : 1,
+    "prompt" : "cat eats pizza"
 }

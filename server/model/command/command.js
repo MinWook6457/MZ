@@ -1,18 +1,27 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
-module.exports = (sequelize) => {
+module.exports = (sequelize, DataTypes) => {
     const Command = sequelize.define(
         'command',
         {
+            id: { // 기본키
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true,
+                comment: 'commandId',
+            },
             content: {
                 type: DataTypes.STRING(255),
                 unique: true, 
                 comment: '사용자가 입력한 프롬프트'
             },
             imgURL : {
-                type: DataTypes.STRING(255),
+                type: DataTypes.STRING(1000),
                 unique: true, 
                 allowNull : false
+            },
+            user_id: { // 외래키
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                comment: '사용자 아이디'
             }
         },
         {
@@ -24,7 +33,7 @@ module.exports = (sequelize) => {
     );
 
     Command.associate = (models) => {
-        Command.belongsTo(models.User, { foreignKey: 'user_id' });
+        Command.belongsTo(models.User, { foreignKey: 'user_id' }); // 외래키 설정
     };
 
     return Command;

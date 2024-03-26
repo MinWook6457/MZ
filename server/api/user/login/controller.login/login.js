@@ -23,7 +23,11 @@ const loginUser = async (req, res) => {
         // JWT 토큰 생성
         const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
         
-        return response(res, 200, { user, token }); 
+        res.cookie('accessToken', token, {maxAge : 3600000 , httpOnly : true})
+
+        console.log(res.cookie('accessToken', token, {maxAge : 3600000 , httpOnly : true}));
+
+        return response(res, 200, { user, accessToken : token }); 
     } catch (err) {
         console.error(err);
         return response(res, 500, '로그인에 실패했습니다.');

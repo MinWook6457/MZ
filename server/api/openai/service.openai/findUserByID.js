@@ -5,10 +5,7 @@ module.exports = async(userId) => {
         const user = await User.findOne({
             where :{
                 id : userId,
-            },
-            attributes : [
-                'email' , 'password'
-            ]
+            }
         })
 
         return user

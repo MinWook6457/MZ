@@ -9,9 +9,8 @@ const db = {};
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 db.User = require('./user/user')(sequelize, Sequelize) // 유저 테이블
+db.Command  = require('./command/command')(sequelize, Sequelize);
 
-const CommandModel = require('./command/command')(sequelize, Sequelize);
-db.Command = CommandModel;
 
 
 db.sequelize = sequelize
