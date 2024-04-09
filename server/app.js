@@ -24,10 +24,6 @@ sequelize.sync({ force: false })
     console.error(err);
   });
 
-
-
-
-
 // 라우팅
 app.use("/openai", openaiRouter)
 app.use("/user", loginRouter)

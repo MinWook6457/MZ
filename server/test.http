@@ -2,6 +2,7 @@ POST http://localhost:8080/openai/read
 Content-Type: application/json 
 
 {
-    "user_id" : 1,
-    "prompt" : "cat eats pizza"
+    "user_id" : 4,
+    "prompt" : "people study in cafe"
 }
+

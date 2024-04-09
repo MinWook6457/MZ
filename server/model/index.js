@@ -10,6 +10,7 @@ const sequelize = new Sequelize(config.database, config.username, config.passwor
 
 db.User = require('./user/user')(sequelize, Sequelize) // 유저 테이블
 db.Command  = require('./command/command')(sequelize, Sequelize);
+// db.Image = require('./image/image')(sequelize,Sequelize);
 
 
 
