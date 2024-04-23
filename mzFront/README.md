@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-#### 작업 기간
-#### 2024.03.20 ~
-
-추후 organization으로 옮길 예정
-=======
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
