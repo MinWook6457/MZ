@@ -20,14 +20,14 @@ const loginUser = async (req, res) => {
             return response(res, 400, "비밀번호가 일치하지 않습니다.");
         }
 
-        // JWT 토큰 생성
-        const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        
-        res.cookie('accessToken', token, {maxAge : 3600000 , httpOnly : true})
+        req.session.loginData = user
+        req.session.save(error => {
+            if(error){
+                console.log(error)
+            }
+        })
 
-        console.log(res.cookie('accessToken', token, {maxAge : 3600000 , httpOnly : true}));
-
-        return response(res, 200, { user, accessToken : token }); 
+        return response(res, 200, 'login Success'); 
     } catch (err) {
         console.error(err);
         return response(res, 500, '로그인에 실패했습니다.');

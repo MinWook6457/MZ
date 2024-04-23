@@ -9,12 +9,21 @@ const authToken = require('../../../middleware/authToken')
 
 router.use(authToken)
 
-router.post('/login',
+router.post('/login', 
     validate([
         body('email').isString(),
         body('password').isString(),
-        ]),
+    ]),
     login.loginUser
-);
+)
+
+router.get('loginCheck', (req , res) =>{
+    if(req.session.loginData){
+        res.send({loggedIn : true, loginData : req.session.loginData})
+    }else{
+        res.send({loggedIn : false})
+    }
+
+})
 
 module.exports = router;

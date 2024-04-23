@@ -1,7 +1,8 @@
 require('dotenv').config()
 
-const express = require("express");
-const cors = require("cors");
+const express = require("express")
+const cors = require("cors")
+const session = require("express-session")
 
 // 라우터 설정
 const openaiRouter = require('./api/openai/route.openai')
@@ -28,6 +29,22 @@ sequelize.sync({ force: false })
 app.use("/openai", openaiRouter)
 app.use("/user", loginRouter)
 app.use("/register", registerRouter)
+
+// 미들웨어
+/* 세션 보류 */
+
+app.use(
+  session({
+    key : "loginData",
+    secret : "testSecret",
+    resave : false,
+    saveUninitialized : false,
+    cookie : {
+      expires : 60 * 60 * 24,
+    },
+  })
+)
+
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
