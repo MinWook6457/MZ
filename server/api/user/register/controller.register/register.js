@@ -11,11 +11,14 @@ const createUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(userData.password, 10); // Password hashing
 
         const user = await User.create({
+            name : userData.name,
             email: userData.email,
             password: hashedPassword
         });
 
-        return response(res, 200, user);
+        console.log(user)
+
+        return response(res, 200, 'Success to Create User');
     } catch (err) {
         console.error(err);
         return response(res, 500, 'Failed to Create User');

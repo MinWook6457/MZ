@@ -8,6 +8,7 @@ const validate = require('../../../middleware/validate');
 
 router.post('/test',
     validate([
+    body('name').isString(),
     body('email').isString(),
     body('password').isString(),
     ]),

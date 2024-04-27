@@ -9,6 +9,11 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
                 comment: 'userId',
             },
+            name : {
+                type: DataTypes.STRING(255),
+                unique: true,
+                comment : '로그인 이름'
+            },
             email: {
                 type: DataTypes.STRING(255),
                 unique: true, // 널 값 허용 , 값 중복 허용X
