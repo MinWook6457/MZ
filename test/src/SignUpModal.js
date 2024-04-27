@@ -133,10 +133,12 @@ function SignUpModal(props){
                             password : password
                         })
                         .then((res)=>{
-                            console.log('회원가입 성공 '+ res.data);
+                            alert('회원가입 성공!');
+                            props.setModal2(false); props.setSm('')
                         })
                         .catch((err)=>{ 
-                            console.log('회원가입 실패!')
+                            alert('회원가입 실패!')
+                            props.setModal2(false); props.setSm('')
                         })
                     }}>회원가입</Button>
                 </Modal.Footer>
