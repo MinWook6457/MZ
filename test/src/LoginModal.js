@@ -1,7 +1,7 @@
+import { useState } from 'react';
 import {Button, Modal, FloatingLabel, Form, CloseButton} from 'react-bootstrap'
 
 function LoginModal(props){
-
     return(
         <div
          className="modal show"
@@ -30,7 +30,10 @@ function LoginModal(props){
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={()=>{ props.setModal(false); props.setSm('') }}>닫기</Button>
-                    <Button variant="primary">로그인</Button>
+                    <Button variant="primary" onClick={()=>{
+
+
+                    }}>로그인</Button>
                 </Modal.Footer>
             </Modal.Dialog>
         </div>

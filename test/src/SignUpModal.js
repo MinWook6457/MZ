@@ -22,6 +22,7 @@ function SignUpModal(props){
     const [isPassword, setIsPassword] = useState(false)
     const [isPasswordChk, setIsPasswordChk] = useState(false)
 
+    
     return(
         <div
         className="modal show"
