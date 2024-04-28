@@ -32,6 +32,8 @@ const loginUser = async (req, res) => {
             }
         })
         */
+        return response(res, 200, 'login Success'); 
+
     } catch (err) {
         console.error(err);
         return response(res, 500, '로그인에 실패했습니다.');
