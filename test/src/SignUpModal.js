@@ -52,7 +52,7 @@ function SignUpModal(props){
                                  }
                             }} />
                             </Col>
-                            {name.length > 0 && <span className={`message ${isName ? 'success' : 'error'}`}>{nameMessage}</span>}
+                            {name.length > 0 && <span className={`${isName ? 'success' : 'error'}`}>{nameMessage}</span>}
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
@@ -75,7 +75,7 @@ function SignUpModal(props){
                                 }
                             }} />
                             </Col>
-                            {email.length > 0 && <span className={`message ${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
+                            {email.length > 0 && <span className={`${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
@@ -97,7 +97,7 @@ function SignUpModal(props){
                                 }
                             }}/>
                             </Col>
-                            {password.length > 0 && (<span className={`message ${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
+                            {password.length > 0 && (<span className={`${isPassword ? 'success' : 'error'}`}>{passwordMessage}</span>)}
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
@@ -118,7 +118,7 @@ function SignUpModal(props){
                                 }
                             }}/>
                             </Col>
-                            {passwordChk.length > 0 && (<span className={`message ${isPasswordChk ? 'success' : 'error'}`}>{passwordChkMessage}</span>)}
+                            {passwordChk.length > 0 && (<span className={`${isPasswordChk ? 'success' : 'error'}`}>{passwordChkMessage}</span>)}
                         </Form.Group>
                     </Form>
                 </Modal.Body>
@@ -138,7 +138,6 @@ function SignUpModal(props){
                         })
                         .catch((err)=>{ 
                             alert('회원가입 실패!')
-                            props.setModal2(false); props.setSm('')
                         })
                     }}>회원가입</Button>
                 </Modal.Footer>
