@@ -7,7 +7,7 @@ const validate = require('../../../middleware/validate');
 
 const authToken = require('../../../middleware/authToken')
 
-router.use(authToken)
+// router.use(authToken)
 
 router.post('/login', 
     validate([
@@ -23,7 +23,7 @@ router.get('loginCheck', (req , res) =>{
     }else{
         res.send({loggedIn : false})
     }
-
+    
 })
 
 module.exports = router;

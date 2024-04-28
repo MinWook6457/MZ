@@ -6,7 +6,7 @@ const { body } = require('express-validator');
 const validate = require('../../../middleware/validate');
 
 
-router.post('/test',
+router.post('/createUser',
     validate([
     body('name').isString(),
     body('email').isString(),
