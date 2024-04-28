@@ -19,13 +19,14 @@ const loginUser = async (req, res) => {
         if (!matchPassword) {
             return response(res, 400, "비밀번호가 일치하지 않습니다.");
         }
-
+        /*
         req.session.loginData = user
         req.session.save(error => {
             if(error){
                 console.log(error)
             }
         })
+        */
 
         return response(res, 200, 'login Success'); 
     } catch (err) {

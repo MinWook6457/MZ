@@ -31,6 +31,7 @@ app.use("/user", loginRouter)
 app.use("/register", registerRouter)
 
 // 미들웨어
+app.use(cors())
 /* 세션 보류 */
 
 app.use(
