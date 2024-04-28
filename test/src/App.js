@@ -11,7 +11,7 @@ function App() {
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
   const [sm, setSm] = useState('');
-
+    
   return (
     <div className='home'>
       <div>
