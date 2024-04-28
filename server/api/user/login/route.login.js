@@ -23,7 +23,7 @@ router.get('loginCheck', (req , res) =>{
     }else{
         res.send({loggedIn : false})
     }
-
+    
 })
 
 router.post('/logout', (req,res) => {
