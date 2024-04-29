@@ -7,8 +7,7 @@ const response = require('../../../response')
 const getImgURL = require('../service.openai/getImgURL')
 
 const readSendedContent = async(req,res) => {
-    // 클라이언트로부터 날라온 프롬프트 
-    const {user_id,prompt} = req.body 
+    const {user_id,prompt} = req.body  // 클라이언트로부터 날라온 프롬프트 
     const imgURL = await getImgURL(prompt); 
     console.log(user_id,prompt,imgURL);
     try{

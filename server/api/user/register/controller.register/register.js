@@ -16,7 +16,7 @@ const createUser = async (req, res) => {
             password: hashedPassword
         });
 
-        console.log(user)
+        // console.log(user)
 
         return response(res, 200, 'Success to Create User');
     } catch (err) {

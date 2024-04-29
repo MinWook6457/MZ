@@ -40,6 +40,20 @@ const loginUser = async (req, res) => {
     }
 };
 
+const logoutUser = async(req,res) => {
+    try{
+        if(!req.session.userData){
+            return response(res,400,'인증되지 않은 유저 입니다.')
+        }
+
+        req.session.destroy() // 세션 파괴
+        return response(res,200,'로그아웃 성공')
+    }catch(err){
+        return response(res,500,'로그아웃 중에 오류가 발생하였습니다.')
+    }
+}
+
 module.exports = {
-    loginUser
+    loginUser,
+    logoutUser
 };
