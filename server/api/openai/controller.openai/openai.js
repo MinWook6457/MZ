@@ -22,8 +22,11 @@ const readSendedContent = async(req,res) => {
             imgURL: imgURL,
             user_id: user_id // 명령과 사용자 간의 관계 설정
         }); 
+
+        const sendImgUrl = command.imgURL
+        console.log(sendImgUrl)
         
-        return response(res,200, command)
+        return response(res,200, sendImgUrl)
     }catch(err){
         return response(res,500,'Failed created Command !!')
     }
