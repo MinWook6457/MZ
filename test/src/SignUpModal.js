@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import {Button, Modal, FloatingLabel, Form, CloseButton, Col, Row} from 'react-bootstrap'
+import {Button, Modal, Form, CloseButton, Col, Row} from 'react-bootstrap'
 
 
 function SignUpModal(props){
@@ -134,7 +134,8 @@ function SignUpModal(props){
                         })
                         .then((res)=>{
                             alert('회원가입 성공!');
-                            props.setModal2(false); props.setSm('')
+                            props.setModal2(false);
+                            props.setSm('');
                         })
                         .catch((err)=>{ 
                             alert('회원가입 실패!')
