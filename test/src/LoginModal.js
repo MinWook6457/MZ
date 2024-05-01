@@ -1,6 +1,9 @@
 import {Button, Modal, FloatingLabel, Form, CloseButton} from 'react-bootstrap'
 import { useState } from 'react';
 import axios from 'axios';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import SignUpModal from './SignUpModal.js';
 
 function LoginModal(props){
 
@@ -8,6 +11,8 @@ function LoginModal(props){
     const [password, setPassword] = useState('');
     const [emailMessage, setEmailMessage] = useState('');
     const [isEmail, setIsEmail] = useState(false);
+    let navigate = useNavigate();
+
 
     return(
         <div
@@ -39,7 +44,6 @@ function LoginModal(props){
                                 setEmailMessage('');
                                 setIsEmail(true);
                             }
-                            
                         }}/>
                         {email.length > 0 && <span className={`${isEmail ? 'success' : 'error'}`}>{emailMessage}</span>}   
                     </FloatingLabel>
@@ -61,12 +65,15 @@ function LoginModal(props){
                             password : password
                         })
                         .then((res)=>{
-                            alert('로그인 성공!');
-                            props.setModal(false); props.setSm('')
+                            alert('로그인 성공!')
+                            props.setModal(false)
+                            props.setSm('')
                         })
                         .catch((err)=>{ 
-                            alert('로그인 실패!')
-                        })
+                            alert('로그인 실패! ' + err)
+                            //navigate('/home', {state: {userId : res.data.results[0], name : res.data.results[1]}});
+                            navigate('/home');
+                        })   
                     }}>로그인</Button>
                 </Modal.Footer>
             </Modal.Dialog>
@@ -74,4 +81,107 @@ function LoginModal(props){
     );
 }
 
-export default LoginModal;
+
+
+function AfterLoginModal(){
+    const [modal, setModal] = useState(false);
+    const [modal2, setModal2] = useState(false);
+    const [sm, setSm] = useState('');
+    const location = useLocation();
+    //const name = location.state.name;
+    //const userId = location.state.userId
+    const [userId, setUserId] = useState('')
+    const [prompt, setPrompt] = useState('');
+    const [imageUrl, setImageUrl] = useState('');
+    
+  
+    return(
+        <div>
+          <div>
+
+            <Navbar bg="white" data-bs-theme="white">
+                <Container>
+                  <Navbar.Brand href="/">MonKey</Navbar.Brand>
+                  <Nav className="me-auto">
+                    <Nav.Link href="/about" style={{marginLeft:"40px"}}>어바웃</Nav.Link>
+                    <Nav.Link href="/member">멤버</Nav.Link>
+                  </Nav>
+                  <Nav className='ml-auto'>
+                    <Nav.Link onClick={()=>{ setModal(true); setSm('show-modal');}}>로그아웃</Nav.Link>
+                  </Nav>
+                </Container>
+            </Navbar>
+
+            <Container>
+                <span style={{float:'right', fontSize:'12px'}}>한지희님 환영합니다😊</span>
+            </Container>
+
+            <Container style={{position: 'absolute', top: '17%', left: '50%', transform: 'translate(-50%, -50%)',}}>
+                {/* <div> */}
+                    <>
+                        <Form.Group className="mb-3" controlId="formBasicEmail">
+                            <Form.Control spellcheck="false" autocomplete='off' type="email" placeholder="프롬프트 입력" 
+                                onChange={(e)=>{
+                                    let currentPrompt = e.target.value;
+                                    setPrompt(currentPrompt);   
+                                }}/>
+                            <Form.Text className="text-muted" style={{fontSize:'12px'}}>
+                                ex. 긴 얼굴에 보통 크기이다. 이마 모서리는 앞머리로 보이지 않고 보통 크기이다.
+                                볼살은 적고 볼에서 턱뼈까지 일자로 내려온다.
+                            </Form.Text>
+                          </Form.Group>
+                    </>
+                {/* </div> */}
+                <Button variant="outline-dark" style={{height:'1.8rem', fontSize:'0.675rem'}} onClick={()=>
+                    axios.post('/openai/read',{
+                        userId: userId,
+                        prompt : prompt
+                    })
+                    .then((res)=>{
+                        setImageUrl(res.data.result[0])
+                    })
+                    .catch((err)=>{ 
+                        alert('Failed created Command!! ' + err)
+                        setImageUrl("https://codingapple1.github.io/shop/shoes1.jpg")
+                    })   
+                }>생성</Button>
+            </Container>
+            
+            <Container>
+                <div style={styles.imageBox}>  
+                    {imageUrl && (
+                        <div>
+                        <img src={imageUrl} alt="Preview" style={styles.image} />
+                        </div>
+                    )}
+                </div>
+            </Container>
+
+          </div>
+        </div>
+    )
+  }
+
+const styles = {
+imageBox: {
+    border: '1px solid #ccc',
+    padding: '10px',
+    margin: '20px 0',
+    borderRadius: '5px',
+    textAlign: 'center',
+    position: 'absolute', // 절대적인 위치로 설정합니다.
+    left: '50%', // 가로 중앙 정렬을 위해 left를 50%로 설정합니다.
+    transform: 'translateX(-50%)', // 가로 방향으로 중앙 정렬합니다.
+    bottom: '20px', // 생성 버튼 아래로 이동시키기 위해 값을 조정합니다.
+    zIndex: '1', // 다른 요소 위에 나타나도록 zIndex를 설정합니다.
+    backgroundColor: 'white', // 배경색을 흰색으로 설정합니다.
+},
+image: {
+    maxWidth: '100%',
+    height: 'auto',
+    display: 'block',
+    margin: '0 auto',
+},
+};
+
+export {LoginModal, AfterLoginModal};
