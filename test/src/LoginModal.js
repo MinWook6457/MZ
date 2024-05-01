@@ -1,5 +1,5 @@
 import {Button, Modal, FloatingLabel, Form, CloseButton} from 'react-bootstrap'
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
@@ -68,11 +68,13 @@ function LoginModal(props){
                             alert('로그인 성공!')
                             props.setModal(false)
                             props.setSm('')
+                            console.log(res.data)
+                            navigate('/home',{state: {userId : res.data.id, name : res.data.name}});
                         })
                         .catch((err)=>{ 
                             alert('로그인 실패! ' + err)
-                            //navigate('/home', {state: {userId : res.data.results[0], name : res.data.results[1]}});
-                            navigate('/home');
+                            //navigate('/home', );
+                            
                         })   
                     }}>로그인</Button>
                 </Modal.Footer>
@@ -83,17 +85,20 @@ function LoginModal(props){
 
 
 
-function AfterLoginModal(){
+function AfterLoginModal () {
+    const location = useLocation();
+    const userId = location.state?.userId; // userId 확인
+    const name = location.state?.name; // name 확인
+    console.log("User ID:", userId, "Name:", name);
+
     const [modal, setModal] = useState(false);
     const [modal2, setModal2] = useState(false);
     const [sm, setSm] = useState('');
-    const location = useLocation();
-    //const name = location.state.name;
-    //const userId = location.state.userId
-    const [userId, setUserId] = useState('')
+    
+    // const [userId, setUserId] = useState('')
     const [prompt, setPrompt] = useState('');
     const [imageUrl, setImageUrl] = useState('');
-    
+
   
     return(
         <div>
@@ -113,9 +118,9 @@ function AfterLoginModal(){
             </Navbar>
 
             <Container>
-                <span style={{float:'right', fontSize:'12px'}}>한지희님 환영합니다😊</span>
+                <span style={{float:'right', fontSize:'12px'}}>{name}님 환영합니다😊</span>
             </Container>
-
+        
             <Container style={{position: 'absolute', top: '17%', left: '50%', transform: 'translate(-50%, -50%)',}}>
                 {/* <div> */}
                     <>
@@ -138,11 +143,12 @@ function AfterLoginModal(){
                         prompt : prompt
                     })
                     .then((res)=>{
-                        setImageUrl(res.data.result[0])
+                        console.log(res.data)
+                        setImageUrl(res.data)
                     })
                     .catch((err)=>{ 
                         alert('Failed created Command!! ' + err)
-                        setImageUrl("https://codingapple1.github.io/shop/shoes1.jpg")
+                        // setImageUrl("https://codingapple1.github.io/shop/shoes1.jpg")
                     })   
                 }>생성</Button>
             </Container>

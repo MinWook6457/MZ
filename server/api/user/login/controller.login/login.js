@@ -21,7 +21,7 @@ const loginUser = async (req, res) => {
         }else{
             // 로그인 성공 시 세션 생성
 
-            res.json({data : user , message : 'OK'})
+            return response(res, 200, user);
             // return response(res, 200, user); 
         }
         /*

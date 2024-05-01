@@ -13,11 +13,7 @@ function App() {
 
       <Routes>
         <Route path='/' element={ <BeforeLoginModal/> }/>
-        <Route path="/home" element={
-                <div>
-                    <AfterLoginModal/>
-                </div>
-                }/>
+        <Route path="/home" element={  <AfterLoginModal/> }/>
         <Route path='*' element={ <div>not found 404</div> }/>
       </Routes>
 

@@ -7,11 +7,11 @@ const response = require('../../../response')
 const getImgURL = require('../service.openai/getImgURL')
 
 const readSendedContent = async(req,res) => {
-    const {user_id,prompt} = req.body  // 클라이언트로부터 날라온 프롬프트 
+    const {userId,prompt} = req.body  // 클라이언트로부터 날라온 프롬프트 
     const imgURL = await getImgURL(prompt); 
-    console.log(user_id,prompt,imgURL);
+    console.log(userId,prompt,imgURL);
     try{
-        const user = await findUserByID(user_id)
+        const user = await findUserByID(userId)
 
         if(!user){
             return response(res,400,'유저 정보가 없습니다.')
@@ -20,7 +20,7 @@ const readSendedContent = async(req,res) => {
         const command = await Command.create({
             content: prompt,
             imgURL: imgURL,
-            user_id: user_id // 명령과 사용자 간의 관계 설정
+            user_id: userId // 명령과 사용자 간의 관계 설정
         }); 
 
         const sendImgUrl = command.imgURL
