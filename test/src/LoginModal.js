@@ -68,10 +68,11 @@ function LoginModal(props){
                             alert('로그인 성공!')
                             props.setModal(false)
                             props.setSm('')
-                            navigate('/home', {state: {userId : res.data.results[0], name : res.data.results[1]}});
                         })
                         .catch((err)=>{ 
                             alert('로그인 실패! ' + err)
+                            //navigate('/home', {state: {userId : res.data.results[0], name : res.data.results[1]}});
+                            navigate('/home');
                         })   
                     }}>로그인</Button>
                 </Modal.Footer>
@@ -89,9 +90,10 @@ function AfterLoginModal(){
     const location = useLocation();
     //const name = location.state.name;
     //const userId = location.state.userId
+    const [userId, setUserId] = useState('')
     const [prompt, setPrompt] = useState('');
     const [imageUrl, setImageUrl] = useState('');
-    const [userId, setUserId] = useState('');
+    
   
     return(
         <div>
@@ -111,10 +113,10 @@ function AfterLoginModal(){
             </Navbar>
 
             <Container>
-                <span style={{float:'right', fontSize:'12px'}}>박지우님 환영합니다😊</span>
+                <span style={{float:'right', fontSize:'12px'}}>한지희님 환영합니다😊</span>
             </Container>
 
-            <Container style={{position: 'absolute', top: '25%', left: '50%', transform: 'translate(-50%, -50%)',}}>
+            <Container style={{position: 'absolute', top: '17%', left: '50%', transform: 'translate(-50%, -50%)',}}>
                 {/* <div> */}
                     <>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -130,7 +132,7 @@ function AfterLoginModal(){
                           </Form.Group>
                     </>
                 {/* </div> */}
-                <Button variant="outline-dark" style={{height:'2rem', fontSize:'0.775rem'}} onClick={()=>
+                <Button variant="outline-dark" style={{height:'1.8rem', fontSize:'0.675rem'}} onClick={()=>
                     axios.post('/openai/read',{
                         userId: userId,
                         prompt : prompt
@@ -166,7 +168,13 @@ imageBox: {
     padding: '10px',
     margin: '20px 0',
     borderRadius: '5px',
-    transform: 'translateY(37%)'
+    textAlign: 'center',
+    position: 'absolute', // 절대적인 위치로 설정합니다.
+    left: '50%', // 가로 중앙 정렬을 위해 left를 50%로 설정합니다.
+    transform: 'translateX(-50%)', // 가로 방향으로 중앙 정렬합니다.
+    bottom: '20px', // 생성 버튼 아래로 이동시키기 위해 값을 조정합니다.
+    zIndex: '1', // 다른 요소 위에 나타나도록 zIndex를 설정합니다.
+    backgroundColor: 'white', // 배경색을 흰색으로 설정합니다.
 },
 image: {
     maxWidth: '100%',
