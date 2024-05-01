@@ -1,8 +1,9 @@
-POST http://localhost:8080/openai/read
+POST http://localhost:8080/register/createUser
 Content-Type: application/json 
 
 {
-    "user_id" : 4,
-    "prompt" : "people study in cafe"
+   "name" : "TTTT",
+   "email" : "tttt@naver.com",
+   "password" : "qweqwe@231"
 }
 

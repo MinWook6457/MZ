@@ -4,23 +4,23 @@ const jwt = require('jsonwebtoken');
 const response = require('../../../../response');
 const findUserByEmail = require('../service.login/findUserByEmail');
 const loginUser = async (req, res) => {
-    const userData = req.body;
+    const {email , password} = req.body
+    console.log(email, password)
     try {
-        const user = await findUserByEmail(userData.email)
+        const user = await findUserByEmail(email)
 
-        // console.log(user)
+        console.log(user)
 
         if (!user) {
             return response(res, 400, "존재하지 않는 사용자입니다.");
         }
 
-        const matchPassword = await bcrypt.compare(userData.password, user.password);
+        const matchPassword = await bcrypt.compare(password, user.password);
         if (!matchPassword) {
             return response(res, 400, "비밀번호가 일치하지 않습니다.");
         }else{
             // 로그인 성공 시 세션 생성
-            req.session.userData = user;
-            console.log(req.session.userData);
+
             res.json({data : user , message : 'OK'})
             // return response(res, 200, user); 
         }
