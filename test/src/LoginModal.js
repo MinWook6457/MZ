@@ -65,11 +65,12 @@ function LoginModal(props){
                             password : password
                         })
                         .then((res)=>{
+                            const userData = res.data; // 세션에 저장된 사용자 데이터
                             alert('로그인 성공!')
                             props.setModal(false)
                             props.setSm('')
-                            console.log(res.data)
-                            navigate('/home',{state: {userId : res.data.id, name : res.data.name}});
+                            console.log(userData)
+                            navigate('/home', { state: { userData } });
                         })
                         .catch((err)=>{ 
                             alert('로그인 실패! ' + err)
@@ -86,10 +87,17 @@ function LoginModal(props){
 
 
 function AfterLoginModal () {
+    const navigate = useNavigate();
     const location = useLocation();
-    const userId = location.state?.userId; // userId 확인
-    const name = location.state?.name; // name 확인
-    console.log("User ID:", userId, "Name:", name);
+    const userData = location.state?.userData;
+    console.log(userData);
+
+    useEffect(() => {
+        if (!userData) {
+          navigate('/login'); // 세션 데이터가 없으면 로그인 페이지로 리다이렉트
+        }
+      }, [userData, navigate]);
+    
 
     const [modal, setModal] = useState(false);
     const [modal2, setModal2] = useState(false);
@@ -99,7 +107,7 @@ function AfterLoginModal () {
     const [prompt, setPrompt] = useState('');
     const [imageUrl, setImageUrl] = useState('');
 
-  
+    
     return(
         <div>
           <div>
@@ -118,7 +126,7 @@ function AfterLoginModal () {
             </Navbar>
 
             <Container>
-                <span style={{float:'right', fontSize:'12px'}}>{name}님 환영합니다😊</span>
+                <span style={{float:'right', fontSize:'12px'}}>{userData.user.name}님 환영합니다😊</span>
             </Container>
         
             <Container style={{position: 'absolute', top: '17%', left: '50%', transform: 'translate(-50%, -50%)',}}>
@@ -139,7 +147,7 @@ function AfterLoginModal () {
                 {/* </div> */}
                 <Button variant="outline-dark" style={{height:'1.8rem', fontSize:'0.675rem'}} onClick={()=>
                     axios.post('/openai/read',{
-                        userId: userId,
+                        userId: userData.user.id,
                         prompt : prompt
                     })
                     .then((res)=>{

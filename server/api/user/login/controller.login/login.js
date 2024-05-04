@@ -18,21 +18,23 @@ const loginUser = async (req, res) => {
         const matchPassword = await bcrypt.compare(password, user.password);
         if (!matchPassword) {
             return response(res, 400, "비밀번호가 일치하지 않습니다.");
-        }else{
-            // 로그인 성공 시 세션 생성
-
-            return response(res, 200, user);
-            // return response(res, 200, user); 
         }
-        /*
-        req.session.loginData = user
-        req.session.save(error => {
-            if(error){
-                console.log(error)
+
+        req.session.userData = {
+            id: user.id,
+            email: user.email,
+            name: user.name,
+        };
+        
+        // 세션 저장 후 로그인 성공 응답
+        req.session.save((error) => {
+            if (error) {
+                console.error('세션 저장 중 오류:', error);
+                return response(res, 500, '로그인 중에 오류가 발생했습니다.');
             }
-        })
-        */
-        return response(res, 200, 'login Success'); 
+            // 로그인 성공 시 사용자 데이터를 반환
+            res.status(200).json({ message: '로그인 성공', user: req.session.userData });
+        });
 
     } catch (err) {
         console.error(err);
@@ -41,15 +43,22 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async(req,res) => {
-    try{
-        if(!req.session.userData){
-            return response(res,400,'인증되지 않은 유저 입니다.')
+    try {
+        if (!req.session.userData) {
+            return response(res, 400, '인증되지 않은 유저입니다.');
         }
 
-        req.session.destroy() // 세션 파괴
-        return response(res,200,'로그아웃 성공')
-    }catch(err){
-        return response(res,500,'로그아웃 중에 오류가 발생하였습니다.')
+        req.session.destroy((error) => {
+            if (error) {
+                console.error('세션 파괴 중 오류:', error);
+                return response(res, 500, '로그아웃 중에 오류가 발생했습니다.');
+            }
+
+            return response(res, 200, '로그아웃 성공');
+        });
+    } catch (err) {
+        console.error('로그아웃 오류:', err);
+        return response(res, 500, '로그아웃 중에 오류가 발생했습니다.');
     }
 }
 
