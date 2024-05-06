@@ -94,7 +94,7 @@ function AfterLoginModal () {
 
     useEffect(() => {
         if (!userData) {
-          navigate('/login'); // 세션 데이터가 없으면 로그인 페이지로 리다이렉트
+          navigate('/'); // 세션 데이터가 없으면 로그인 페이지로 리다이렉트
         }
       }, [userData, navigate]);
     
@@ -151,8 +151,13 @@ function AfterLoginModal () {
                         prompt : prompt
                     })
                     .then((res)=>{
-                        console.log(res.data)
-                        setImageUrl(res.data)
+                        const imageUrl = res.data.result; // 응답 데이터에서 URL 추출
+                        console.log('이미지 URL:', imageUrl); // URL 출력
+                        if (typeof imageUrl === 'string') { // 올바른 문자열인지 확인
+                          setImageUrl(imageUrl);
+                        } else {
+                          console.error('올바르지 않은 URL 형식:', imageUrl);
+                        }
                     })
                     .catch((err)=>{ 
                         alert('Failed created Command!! ' + err)
@@ -163,7 +168,7 @@ function AfterLoginModal () {
             
             <Container>
                 <div style={styles.imageBox}>  
-                    {imageUrl && (
+                    {imageUrl && typeof imageUrl === 'string' && (
                         <div>
                         <img src={imageUrl} alt="Preview" style={styles.image} />
                         </div>

@@ -9,6 +9,7 @@ const authToken = require('../../../middleware/authToken')
 
 // router.use(authToken)
 
+// 로그인
 router.post('/login', 
     validate([
         body('email').isString(),
@@ -30,7 +31,7 @@ router.get('/loginCheck', (req, res) => {
 // 로그아웃
 router.post('/logout', (req, res) => {
     if (req.session.userData) {
-        req.session.destroy((err) => {
+        req.session.destroy((err) => { // 세션 파괴
             if (err) {
                 console.error('세션 파괴 중 오류:', err);
                 return res.status(500).send({ message: '로그아웃에 실패했습니다.' });

@@ -19,7 +19,7 @@ const loginUser = async (req, res) => {
         if (!matchPassword) {
             return response(res, 400, "비밀번호가 일치하지 않습니다.");
         }
-
+        // 세션 매핑
         req.session.userData = {
             id: user.id,
             email: user.email,

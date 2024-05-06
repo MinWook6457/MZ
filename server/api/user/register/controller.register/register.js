@@ -3,11 +3,13 @@ const bcrypt = require('bcrypt');
 
 const { User } = require('../../../../model');
 const response = require('../../../../response');
+const findUserByEmail = require('../service.register/findUserByEmail');
 
 const createUser = async (req, res) => {
     const { name, email, password } = req.body;    
     console.log('회원가입 라우팅 확인')
     try {
+
         const hashedPassword = await bcrypt.hash(password, 10); // Password hashing
 
         const user = await User.create({
@@ -16,6 +18,8 @@ const createUser = async (req, res) => {
             password: hashedPassword
         });
 
+
+        /*
         console.log(user)
 
         const test = await User.findOne({
@@ -24,10 +28,8 @@ const createUser = async (req, res) => {
             },
             attributes : ['id','name']
         })
-
-        const result = [test.id , test.name]
-
-        return response(res, 200,user);
+        */
+        return response(res, 200, user);
     } catch (err) {
         console.error(err);
         return response(res, 500, 'Failed to Create User');
