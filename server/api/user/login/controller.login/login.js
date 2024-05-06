@@ -40,29 +40,8 @@ const loginUser = async (req, res) => {
         console.error(err);
         return response(res, 500, '로그인에 실패했습니다.');
     }
-};
-
-const logoutUser = async(req,res) => {
-    try {
-        if (!req.session.userData) {
-            return response(res, 400, '인증되지 않은 유저입니다.');
-        }
-
-        req.session.destroy((error) => {
-            if (error) {
-                console.error('세션 파괴 중 오류:', error);
-                return response(res, 500, '로그아웃 중에 오류가 발생했습니다.');
-            }
-
-            return response(res, 200, '로그아웃 성공');
-        });
-    } catch (err) {
-        console.error('로그아웃 오류:', err);
-        return response(res, 500, '로그아웃 중에 오류가 발생했습니다.');
-    }
 }
 
 module.exports = {
-    loginUser,
-    logoutUser
-};
+    loginUser
+}
