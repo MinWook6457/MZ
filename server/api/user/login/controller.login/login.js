@@ -42,6 +42,29 @@ const loginUser = async (req, res) => {
     }
 }
 
+const logoutUser = async(req,res) => {
+    try {
+        if (!req.session.userData) {
+            return res.status(400).json({ message: '로그인되지 않은 상태입니다.' });
+        }
+
+        // 세션 파괴
+        req.session.destroy((error) => {
+            if (error) {
+                console.error('세션 파괴 중 오류:', error);
+                return res.status(500).json({ message: '로그아웃 중에 오류가 발생했습니다.' });
+            }
+
+            res.status(200).json({ message: '로그아웃 성공' });
+        });
+
+    } catch (error) {
+        console.error('로그아웃 처리 중 오류:', error);
+        res.status(500).json({ message: '서버 오류로 로그아웃에 실패했습니다.' });
+    }
+}
+
 module.exports = {
-    loginUser
+    loginUser,
+    logoutUser
 }
