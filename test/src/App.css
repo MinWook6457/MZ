@@ -28,6 +28,21 @@
   color: red;
 }
 
+.spinner{
+  height: 30px;
+  width: 30px;
+  border: 7px solid;
+  border-radius: 50%;
+  border-color: white black black black;
+  animation: rotate 1.5s linear infinite;
+  position: absolute; /* 포지셔닝을 절대 위치로 설정 */
+  top: 50%; /* 부모 요소 상단 기준으로 50%에 위치하도록 설정 */
+  left: 50%; /* 부모 요소 왼쪽 기준으로 50%에 위치하도록 설정 */
+}
+@keyframes rotate{
+  to { transform: rotate(365deg);}
+}
+
 
 .App {
   text-align: center;

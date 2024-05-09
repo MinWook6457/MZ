@@ -66,7 +66,7 @@ function LoginModal(props){
                         })
                         .then((res)=>{
                             const userData = res.data; // 세션에 저장된 사용자 데이터
-                            alert('로그인 성공!')
+                            alert('로그인 성공')
                             props.setModal(false)
                             props.setSm('')
                             console.log(userData)
@@ -91,6 +91,7 @@ function AfterLoginModal () {
     const location = useLocation();
     const userData = location.state?.userData;
     console.log(userData);
+    const [loadingComponent, setLoadingComponent] = useState(true);
 
     useEffect(() => {
         if (!userData) {
@@ -120,7 +121,18 @@ function AfterLoginModal () {
                     <Nav.Link href="/member">멤버</Nav.Link>
                   </Nav>
                   <Nav className='ml-auto'>
-                    <Nav.Link onClick={()=>{ setModal(true); setSm('show-modal');}}>로그아웃</Nav.Link>
+                    <Nav.Link onClick={()=>{ 
+                        axios.post('/user/logout',{
+                            userData:userData
+                        })
+                        .then((res)=>{
+                            alert(res.data.message)
+                            navigate('/');
+                        })
+                        .catch((err)=>{
+                            alert(err);
+                        })
+                    }}>로그아웃</Nav.Link>
                   </Nav>
                 </Container>
             </Navbar>
@@ -145,32 +157,34 @@ function AfterLoginModal () {
                           </Form.Group>
                     </>
                 {/* </div> */}
-                <Button variant="outline-dark" style={{height:'1.8rem', fontSize:'0.675rem'}} onClick={()=>
-                    axios.post('/openai/read',{
-                        userId: userData.user.id,
-                        prompt : prompt
-                    })
-                    .then((res)=>{
-                        const imageUrl = res.data.result; // 응답 데이터에서 URL 추출
-                        console.log('이미지 URL:', imageUrl); // URL 출력
-                        if (typeof imageUrl === 'string') { // 올바른 문자열인지 확인
-                          setImageUrl(imageUrl);
-                        } else {
-                          console.error('올바르지 않은 URL 형식:', imageUrl);
-                        }
-                    })
-                    .catch((err)=>{ 
-                        alert('Failed created Command!! ' + err)
-                        // setImageUrl("https://codingapple1.github.io/shop/shoes1.jpg")
-                    })   
+                <Button variant="outline-dark" style={{height:'1.8rem', fontSize:'0.675rem'}} onClick={()=>{
+                        axios.post('/openai/read',{
+                            userId: userData.user.id,
+                            prompt : prompt
+                        })
+                        .then((res)=>{
+                            const imageUrl = res.data.result; // 응답 데이터에서 URL 추출
+                            console.log('이미지 URL:', imageUrl); // URL 출력
+                            if (typeof imageUrl === 'string') { // 올바른 문자열인지 확인
+                                setImageUrl(imageUrl);
+                            } else {
+                                console.error('올바르지 않은 URL 형식:', imageUrl);
+                            }
+                        })
+                        .catch((err)=>{ 
+                            alert('Failed created Command!! ' + err)
+                            // setImageUrl("https://codingapple1.github.io/shop/shoes1.jpg")
+                        })
+                    }
                 }>생성</Button>
             </Container>
             
             <Container>
-                <div style={styles.imageBox}>  
+                <div style={styles.imageBox}>
+                    <div className='spinner' style={{top:'50%', left:'50%'}}></div>
                     {imageUrl && typeof imageUrl === 'string' && (
                         <div>
-                        <img src={imageUrl} alt="Preview" style={styles.image} />
+                            <img src={imageUrl} alt="Preview" style={styles.image} />
                         </div>
                     )}
                 </div>
@@ -183,6 +197,8 @@ function AfterLoginModal () {
 
 const styles = {
 imageBox: {
+    width:'800px',
+    height:'800px',
     border: '1px solid #ccc',
     padding: '10px',
     margin: '20px 0',
