@@ -1,10 +1,29 @@
-'use strict'
+'use strict';
 
+require('dotenv').config();
 const Sequelize = require('sequelize');
-
-const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.json')[env];
 const db = {};
+
+const config = {
+    username: process.env.DB_USER,
+    password: process.env.DB_PASW,
+    database: process.env.DB_BASE,
+    host: process.env.DB_HOST,
+    dialect: 'mysql',
+    timezone: '+09:00', // 한국 시간 "asia/seoul"
+    dialectOptions: {
+        charset: 'utf8mb4',
+        dateStrings: true,
+        typeCast: true,
+    },
+    define: {
+        underscored: false,
+        freezeTableName: false,
+        charset: 'utf8',
+        timestamps: true,
+        paranoid: true,
+    },
+};
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
