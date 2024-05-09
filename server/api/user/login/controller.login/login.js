@@ -43,6 +43,7 @@ const loginUser = async (req, res) => {
 }
 
 const logoutUser = async(req,res) => {
+
     try {
         if (!req.session.userData) {
             return res.status(400).json({ message: '로그인되지 않은 상태입니다.' });
@@ -54,6 +55,13 @@ const logoutUser = async(req,res) => {
                 console.error('세션 파괴 중 오류:', error);
                 return res.status(500).json({ message: '로그아웃 중에 오류가 발생했습니다.' });
             }
+
+            res.clearCookie('connect.sid', {
+                path: '/', // 쿠키 경로 설정
+                httpOnly: true, // HTTP 전용 쿠키
+                // secure: process.env.NODE_ENV === 'production', // 프로덕션 환경에서는 secure 옵션 사용
+                sameSite: 'strict', // 쿠키의 SameSite 설정
+              });        
 
             res.status(200).json({ message: '로그아웃 성공' });
         });
