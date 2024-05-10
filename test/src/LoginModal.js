@@ -1,5 +1,5 @@
 import {Button, Modal, FloatingLabel, Form, CloseButton} from 'react-bootstrap'
-import { useState , useEffect} from 'react';
+import { useState , useEffect, KeyboardEvent} from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Navbar, Container, Nav } from 'react-bootstrap';
@@ -13,6 +13,31 @@ function LoginModal(props){
     const [isEmail, setIsEmail] = useState(false);
     let navigate = useNavigate();
 
+    const handleSubmit = (e) => {
+        axios.post('/user/login',{
+            email: email,
+            password : password
+        })
+        .then((res)=>{
+            const userData = res.data; // 세션에 저장된 사용자 데이터
+            alert('로그인 성공')
+            props.setModal(false)
+            props.setSm('')
+            console.log(userData)
+            navigate('/home', { state: { userData } });
+        })
+        .catch((err)=>{ 
+            alert('로그인 실패! ' + err)
+            //navigate('/home', );
+            
+        })   
+    }
+
+    const handleEnter = (e) => {
+        if (e.key === 'Enter') {
+          handleSubmit(); // 작성한 댓글 post 요청하는 함수 
+        }
+      };
 
     return(
         <div
@@ -49,7 +74,7 @@ function LoginModal(props){
                     </FloatingLabel>
                         
                     <FloatingLabel controlId="floatingPassword" label="비밀번호">
-                        <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="Password" onChange={(e)=>{
+                        <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="Password"  onKeyDown={ handleEnter} onChange={(e)=>{
                             const currentPassword = e.target.value;
                             setPassword(currentPassword);
                         }} />
@@ -59,25 +84,7 @@ function LoginModal(props){
 
                 <Modal.Footer>
                     <Button variant="secondary" onClick={()=>{ props.setModal(false); props.setSm('') }}>닫기</Button>
-                    <Button variant="primary" onClick={()=>{
-                        axios.post('/user/login',{
-                            email: email,
-                            password : password
-                        })
-                        .then((res)=>{
-                            const userData = res.data; // 세션에 저장된 사용자 데이터
-                            alert('로그인 성공')
-                            props.setModal(false)
-                            props.setSm('')
-                            console.log(userData)
-                            navigate('/home', { state: { userData } });
-                        })
-                        .catch((err)=>{ 
-                            alert('로그인 실패! ' + err)
-                            //navigate('/home', );
-                            
-                        })   
-                    }}>로그인</Button>
+                    <Button variant="primary" onClick={ handleSubmit }>로그인</Button>
                 </Modal.Footer>
             </Modal.Dialog>
         </div>
@@ -91,7 +98,7 @@ function AfterLoginModal () {
     const location = useLocation();
     const userData = location.state?.userData;
     console.log(userData);
-    const [loadingComponent, setLoadingComponent] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!userData) {
@@ -110,10 +117,10 @@ function AfterLoginModal () {
 
     
     return(
-        <div>
+        <div className='home'>
           <div>
 
-            <Navbar bg="white" data-bs-theme="white">
+            <Navbar bg="dark" data-bs-theme="dark">
                 <Container>
                   <Navbar.Brand href="/">MonKey</Navbar.Brand>
                   <Nav className="me-auto">
@@ -138,7 +145,7 @@ function AfterLoginModal () {
             </Navbar>
 
             <Container>
-                <span style={{float:'right', fontSize:'12px'}}>{userData.user.name}님 환영합니다😊</span>
+                <span style={{float:'right', fontSize:'12px', color:'white'}}>{userData.user.name}님 환영합니다😊</span>
             </Container>
         
             <Container style={{position: 'absolute', top: '17%', left: '50%', transform: 'translate(-50%, -50%)',}}>
@@ -150,14 +157,15 @@ function AfterLoginModal () {
                                     let currentPrompt = e.target.value;
                                     setPrompt(currentPrompt);   
                                 }}/>
-                            <Form.Text className="text-muted" style={{fontSize:'12px'}}>
+                            <Form.Text style={{fontSize:'12px', color:'white'}}>
                                 ex. 긴 얼굴에 보통 크기이다. 이마 모서리는 앞머리로 보이지 않고 보통 크기이다.
                                 볼살은 적고 볼에서 턱뼈까지 일자로 내려온다.
                             </Form.Text>
                           </Form.Group>
                     </>
                 {/* </div> */}
-                <Button variant="outline-dark" style={{height:'1.8rem', fontSize:'0.675rem'}} onClick={()=>{
+                <Button variant='outline-dark' style={{height:'1.8rem', fontSize:'0.675rem', background:'grey'}} onClick={()=>{
+                        setLoading(true);
                         axios.post('/openai/read',{
                             userId: userData.user.id,
                             prompt : prompt
@@ -167,13 +175,16 @@ function AfterLoginModal () {
                             console.log('이미지 URL:', imageUrl); // URL 출력
                             if (typeof imageUrl === 'string') { // 올바른 문자열인지 확인
                                 setImageUrl(imageUrl);
+                                setLoading(false);
                             } else {
                                 console.error('올바르지 않은 URL 형식:', imageUrl);
+                                setLoading(false);
                             }
                         })
                         .catch((err)=>{ 
                             alert('Failed created Command!! ' + err)
                             // setImageUrl("https://codingapple1.github.io/shop/shoes1.jpg")
+                            setLoading(false);
                         })
                     }
                 }>생성</Button>
@@ -181,7 +192,7 @@ function AfterLoginModal () {
             
             <Container>
                 <div style={styles.imageBox}>
-                    <div className='spinner' style={{top:'50%', left:'50%'}}></div>
+                    {loading === true ? <div className='spinner' style={{top:'50%', left:'50%'}}></div> : null}
                     {imageUrl && typeof imageUrl === 'string' && (
                         <div>
                             <img src={imageUrl} alt="Preview" style={styles.image} />
@@ -197,8 +208,8 @@ function AfterLoginModal () {
 
 const styles = {
 imageBox: {
-    width:'800px',
-    height:'800px',
+    width:'600px',
+    height:'600px',
     border: '1px solid #ccc',
     padding: '10px',
     margin: '20px 0',

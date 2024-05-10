@@ -29,9 +29,9 @@ function BeforeLoginModal(){
   const [sm, setSm] = useState('');
 
   return(
-      <div>
+      <div className='home'>
         <div>
-          <Navbar bg="white" data-bs-theme="white">
+          <Navbar bg="dark" data-bs-theme="dark">
               <Container>
                 <Navbar.Brand href="/">MonKey</Navbar.Brand>
                 <Nav className="me-auto">
