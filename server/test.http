@@ -1,9 +1,7 @@
-POST http://localhost:8080/register/createUser
+POST http://localhost:8080/openai/history
 Content-Type: application/json 
 
 {
-   "name" : "TTTT",
-   "email" : "tttt@naver.com",
-   "password" : "qweqwe@231"
+   "user_id" : 2
 }
 

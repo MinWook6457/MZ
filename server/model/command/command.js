@@ -17,11 +17,6 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(1000),
                 unique: true, 
                 allowNull : false
-            },
-            user_id: { // 외래키
-                type: DataTypes.INTEGER,
-                allowNull: false,
-                comment: '사용자 아이디'
             }
         },
         {
