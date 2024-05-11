@@ -29,18 +29,15 @@ function SignUpModal(props){
         >
             <Modal.Dialog>
                 <Modal.Header>
-                    <Modal.Title>회원가입</Modal.Title>
+                    <Modal.Title>SignUp</Modal.Title>
                     <CloseButton onClick={()=>{ props.setModal2(false); props.setSm('')}}/>
                 </Modal.Header>
 
                 <Modal.Body>
                     <Form>
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalEmail">
-                            <Form.Label column sm={3}>
-                            이름
-                            </Form.Label>
                             <Col sm={10}>
-                            <Form.Control spellcheck="false" autocomplete='off' type="name" placeholder="이름" onChange={(e)=>{ 
+                            <Form.Control spellcheck="false" autocomplete='off' type="name" placeholder="Name" onChange={(e)=>{ 
                                 setName(e.target.value)
                                 //이름 유효성 검사
                                 if (e.target.value.length < 2 || e.target.value.length > 5) {
@@ -56,11 +53,8 @@ function SignUpModal(props){
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                            <Form.Label column sm={3}>
-                            이메일
-                            </Form.Label>
                             <Col sm={10}>
-                            <Form.Control spellcheck="false" autocomplete='off' type="email" placeholder="이메일" onChange={(e)=>{ 
+                            <Form.Control spellcheck="false" autocomplete='off' type="email" placeholder="e-mail" onChange={(e)=>{ 
                                 setEmail(e.target.value)
                                 //이메일 유효성 검사
                                 const emailRegex =
@@ -79,11 +73,8 @@ function SignUpModal(props){
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                            <Form.Label column sm={3}>
-                            비밀번호
-                            </Form.Label>
                             <Col sm={20}>
-                            <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="비밀번호" onChange={(e)=>{ 
+                            <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="password" onChange={(e)=>{ 
                                 setPassword(e.target.value)
                                 //비밀번호 유효성 검사
                                 const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/
@@ -101,11 +92,8 @@ function SignUpModal(props){
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                            <Form.Label column sm={4}>
-                            비밀번호 확인
-                            </Form.Label>
                             <Col sm={20}>
-                            <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="비밀번호 확인" onChange={(e)=>{
+                            <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="password check" onChange={(e)=>{
                                 setPasswordChk(e.target.value) 
                                 const currentPasswordChk = e.target.value;
                                 //비밀번호 확인 유효성 검사
@@ -124,9 +112,9 @@ function SignUpModal(props){
                 </Modal.Body>
 
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={()=>{ props.setModal2(false); props.setSm('')}}>닫기</Button>
+                    <button className='btn' onClick={()=>{ props.setModal2(false); props.setSm('')}}>Close</button>
                     {/* 4개 모두 유효하면 버튼 활성화 */}
-                    <Button disabled={!(isName && isEmail && isPassword && isPasswordChk)} variant="primary" onClick={()=>{
+                    <button className='btn' disabled={!(isName && isEmail && isPassword && isPasswordChk)} onClick={()=>{
                         axios.post('/register/createUser',{
                             name: name,
                             email: email,
@@ -140,7 +128,7 @@ function SignUpModal(props){
                         .catch((err)=>{ 
                             alert('회원가입 실패!')
                         })
-                    }}>회원가입</Button>
+                    }}>Sign up</button>
                 </Modal.Footer>
             </Modal.Dialog>
         </div>
