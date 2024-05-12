@@ -1,0 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600&display=swap");
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+button {
+  all: unset;
+}
+
+.btn2 {
+    font-family: Mukta;
+    background-color: #f9fafb;
+    color: #111827;
+    justify-content: center;
+    align-items: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  padding: 10px 26px;
+  border: 2px solid #111827;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.btn2::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #2256c7;
+  border-radius: inherit;
+  translate: 6px 6px;
+  transition: 0.25s;
+  z-index: -1;
+}
+
+.btn2:hover::after {
+  translate: 0;
+}
+.btn2:hover {
+  background-color: #2256c7;
+  color: #f9fafb;
+}

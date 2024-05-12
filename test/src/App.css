@@ -1,15 +1,36 @@
+/* 드래그 방지 */
+.drag-prevent{
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+}
+
+.container {
+  padding-top: 40px;
+}
+
 .home {
-  background: #343a40;;
+  background: black;
   height: 100vh;
   width: 100%;
 }
 
 .modal-background {
-  position: fixed;
+  position: absolute;
   top:0; left: 0; bottom: 0; right: 0;
+  width: 100%; /* 화면 너비를 꽉 채웁니다. */
+  height: 100%; /* 화면 높이를 꽉 채웁니다. */
   background: rgba(0, 0, 0, 0.5);
   visibility: hidden;
   opacity: 0;
+  top: 58%;
+  left: 50%;
+  display: flex; /* 자식 요소를 가로로 나열하기 위해 flex 사용 */
+  justify-content: center; /* 가로 중앙 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  transform: translate(-50%, -50%);
   transition: all 0.7s;
 }
 
@@ -33,7 +54,7 @@
   width: 30px;
   border: 7px solid;
   border-radius: 50%;
-  border-color: red black black black;
+  border-color: #2256c7 black black black;
   animation: rotate 1.5s linear infinite;
   position: absolute; /* 포지셔닝을 절대 위치로 설정 */
   top: 50%; /* 부모 요소 상단 기준으로 50%에 위치하도록 설정 */
