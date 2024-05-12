@@ -1,13 +1,10 @@
 import './App.css'
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import {LoginModal, AfterLoginModal} from './LoginModal.js';
 import SignUpModal from './SignUpModal.js';
 import AboutPage from './AboutPage.js';
 import MemberPage from './MemberPage.js';
 import { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom'
+import { Routes, Route } from 'react-router-dom'
 import './Navbar2.css'
 
 function App() {

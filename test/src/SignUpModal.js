@@ -73,7 +73,7 @@ function SignUpModal(props){
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                            <Col sm={20}>
+                            <Col sm={10}>
                             <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="password" onChange={(e)=>{ 
                                 setPassword(e.target.value)
                                 //비밀번호 유효성 검사
@@ -92,7 +92,7 @@ function SignUpModal(props){
                         </Form.Group>
 
                         <Form.Group as={Row} className="mb-3" controlId="formHorizontalPassword">
-                            <Col sm={20}>
+                            <Col sm={10}>
                             <Form.Control spellcheck="false" autocomplete='off' type="password" placeholder="password check" onChange={(e)=>{
                                 setPasswordChk(e.target.value) 
                                 const currentPasswordChk = e.target.value;
