@@ -1,13 +1,14 @@
-import { Button, Modal, FloatingLabel, Form, CloseButton} from 'react-bootstrap'
-import { useState , useEffect, KeyboardEvent} from 'react';
+import { Modal, FloatingLabel, Form, CloseButton} from 'react-bootstrap'
+import { useState , useEffect} from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Navbar, Container, Nav } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import "./Btn.css"
 import "./Btn2.css"
 import "./Navbar2.css"
 import "./InputStyle.css"
 import "./InputStyle2.css"
+import "./Sidebar.css"
 
 function LoginModal(props){
 
@@ -16,6 +17,11 @@ function LoginModal(props){
     const [emailMessage, setEmailMessage] = useState('');
     const [isEmail, setIsEmail] = useState(false);
     let navigate = useNavigate();
+    const [userId, setUserId] = useState('');
+    const [promHistory, setPromHistory] = useState([]);
+    const [urlHistory, setUrlHistory] = useState([])
+    const [dateHistory, setDateHistory] = useState([])
+
 
     const handleSubmit = (e) => {
         axios.post('/user/login',{
@@ -28,25 +34,45 @@ function LoginModal(props){
             props.setModal(false)
             props.setSm('')
             console.log(userData)
+            setUserId(userData.user.id)
             navigate('/home', { state: { userData } });
         })
         .catch((err)=>{ 
-            alert('로그인 실패! ' + err)
+            alert('로그인 실패')
             //navigate('/home', );
             
-        })   
+        })
+
+        axios.post('/openai/history',{
+            userId: userId,
+        })
+        .then((res)=>{
+            const result = res.data.result; // 응답 데이터에서 URL 추출
+            console.log(result);
+            for(var i=0; i < result.length; i++){
+                let copy1, copy2, copy3;
+                copy1.push(result[i].content)
+                copy2.push(result[i].imageUrl)
+                copy3.push(result[i].createdAt)
+            }
+        })
+        .catch((err)=>{ 
+            alert('이미지 생성 기록 최신화 실패! ' + err)
+        })
+
+
     }
 
     const handleEnter = (e) => {
         if (e.key === 'Enter') {
-          handleSubmit(); // 작성한 댓글 post 요청하는 함수 
+          handleSubmit();
         }
       };
 
     return(
         <div
          className="modal show"
-         style={{ display: 'block', position: 'absolute', zIndex:'1000'}}
+         style={{ display: 'block', position: 'absolute', zIndex:'1000', overflow:'hidden'}}
         >
             <Modal.Dialog style={{background:'grey'}}>
                 <Modal.Header>
@@ -111,6 +137,7 @@ function AfterLoginModal () {
     console.log(userData);
     const [loading, setLoading] = useState(false);
 
+
     useEffect(() => {
         if (!userData) {
           navigate('/'); // 세션 데이터가 없으면 로그인 페이지로 리다이렉트
@@ -118,10 +145,6 @@ function AfterLoginModal () {
       }, [userData, navigate]);
     
 
-    const [modal, setModal] = useState(false);
-    const [modal2, setModal2] = useState(false);
-    const [sm, setSm] = useState('');
-    
     // const [userId, setUserId] = useState('')
     const [prompt, setPrompt] = useState('');
     const [imageUrl, setImageUrl] = useState('');
@@ -152,7 +175,7 @@ function AfterLoginModal () {
               <span className='drag-prevent' style={{float:'right', fontSize:'13px', color:'white', marginRight:'15px'}}>🍌{userData.user.name}님 환영합니다🍌</span>
             </div>
 
-            <div>
+            <div style={{marginRight:'10px'}}>
                 <Container style={{paddingTop:'0px'}}>
                     <>
                         <Form.Group className="mb-3" controlId="formBasicEmail" style={{marginTop:'60px'}}>
@@ -208,17 +231,26 @@ function AfterLoginModal () {
                     }>
                         Submit
                     </button>
-
-                    <div style={styles.imageBox}>
-                        {loading === true ? <div className='spinner' style={{top:'50%', left:'50%'}}></div> : null}
-                        {imageUrl && typeof imageUrl === 'string' && (
-                            <div>
-                                <img src={imageUrl} alt="Preview" style={styles.image} />
-                            </div>
-                        )}
-                    </div>
                 </Container>
-          </div>
+
+                <div className='container' style={{margin:'auto', marginRight:'0px', paddingRight:'2px'}}>
+                    <div className='row'>
+                        <div className='col-md-4' style={styles.imageBox}>
+                            {loading === true ? <div className='spinner' style={{top:'50%', left:'50%'}}></div> : null}
+                            {imageUrl && typeof imageUrl === 'string' && (
+                                <div>
+                                    <img src={imageUrl} alt="Preview" style={styles.image} />
+                                </div>
+                            )}
+                        </div>
+                        <div className='col-md-4' style={{font:'white', paddingLeft:'0px',paddingRight: '0px', paddingTop:'8px', backgroundColor:'white'}}>
+                            <ul style={{paddingLeft:'12px'}}>A</ul>
+                            <ul style={{paddingLeft:'12px'}}>B</ul>
+                            <ul style={{paddingLeft:'12px'}}>C</ul>
+                        </div>
+                    </div>
+                </div>    
+            </div>
         </div>
     )
   }
@@ -234,7 +266,9 @@ imageBox: {
     textAlign: 'center',
     position: 'relative', // 절대적인 위치로 설정합니다.
     zIndex: '1', // 다른 요소 위에 나타나도록 zIndex를 설정합니다.
-    backgroundColor: 'white', // 배경색을 흰색으로 설정합니다.
+    backgroundColor: 'lightgrey', // 배경색을 흰색으로 설정합니다.
+    marginLeft: '170px',
+    marginRight:'110px'
 },
 image: {
     maxWidth: '100%',

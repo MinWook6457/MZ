@@ -1,0 +1,28 @@
+.sidebar {
+    width: 400px;
+    background-color: #333;
+    color: white;
+    height: 100%;
+    justify-content: flex-end;
+    top: 0;
+    left: 0;
+}
+
+.sidebar ul {
+    padding: 0;
+}
+
+.sidebar ul li {
+    list-style-type: none;
+}
+
+.sidebar ul li a {
+    display: block;
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    background-color: #555;
+}
